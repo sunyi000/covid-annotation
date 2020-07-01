@@ -1,0 +1,67 @@
+BootStrap: docker
+From: centos:7
+
+%runscript 
+  
+  exec vncserver "${@}"
+
+%startscript
+  exec vncserver "${@}"
+
+
+%post
+
+  # Get dependencies
+  yum install -y epel-release
+  yum update -y
+  yum -y group install mate-desktop-environment graphical-server-environment
+
+  yum install -y tigervnc-server \
+     libXcomposite \
+     libXdamage \
+     mesa-libEGL \
+     mesa-libgbm \
+     harfbuzz \
+     mesa-libglapi \
+     graphite2 \
+     xterm \
+     libpng \
+     xorg-x11-fonts-100dpi \
+     xorg-x11-fonts-75dpi \
+     xorg-x11-fonts-misc
+
+
+ cd /tmp
+ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O Miniconda3.sh
+ 
+ adduser anaconda
+
+ chmod +x Miniconda3.sh
+ /tmp/Miniconda3.sh -b -p /opt/anaconda
+
+ chown -R anaconda:anaconda /opt/anaconda
+
+ chmod -R go-w /opt/anaconda
+
+ chmod -R go+rX /opt/anaconda
+ 
+ cd /tmp
+ #wget https://raw.githubusercontent.com/sunyi000/singularity-recipes/master/mate-env/covid.desktop
+ wget https://raw.githubusercontent.com/sunyi000/singularity-recipes/master/mate-env/vncserver
+ 
+ rm /bin/vncserver
+ mv /tmp/vncserver /bin/
+ chmod 0755 /bin/vncserver
+ #mv /tmp/covid.desktop /usr/share/applications
+
+ /opt/anaconda/bin/conda env remove -y -n covid-if-annotations || true
+
+ /opt/anaconda/bin/conda create -c kreshuklab -c conda-forge -n covid-if-annotations covid-if-annotations -y
+ 
+ /opt/anaconda/bin/conda init bash
+ 
+ cd /usr/local/bin
+ wget https://raw.githubusercontent.com/sunyi000/singularity-recipes/master/mate-env/startup.sh
+
+ chmod +x /usr/local/bin/startup.sh
+  
