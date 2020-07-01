@@ -46,12 +46,13 @@ From: centos:7
  chmod -R go+rX /opt/anaconda
  
  cd /tmp
- #wget https://raw.githubusercontent.com/sunyi000/singularity-recipes/master/mate-env/covid.desktop
- wget https://raw.githubusercontent.com/sunyi000/singularity-recipes/master/mate-env/vncserver
- 
+ #wget https://raw.githubusercontent.com/sunyi000/covid-annotation/master/covid.desktop
+
+ wget https://raw.githubusercontent.com/sunyi000/covid-annotation/master/vncserver 
  rm /bin/vncserver
  mv /tmp/vncserver /bin/
  chmod 0755 /bin/vncserver
+
  #mv /tmp/covid.desktop /usr/share/applications
 
  /opt/anaconda/bin/conda env remove -y -n covid-if-annotations || true
@@ -61,7 +62,7 @@ From: centos:7
  /opt/anaconda/bin/conda init bash
  
  cd /usr/local/bin
- wget https://raw.githubusercontent.com/sunyi000/singularity-recipes/master/mate-env/startup.sh
+ wget https://raw.githubusercontent.com/sunyi000/covid-annotation/master/startup.sh
 
  chmod +x /usr/local/bin/startup.sh
   
